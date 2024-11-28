@@ -1,0 +1,62 @@
+.login-container {
+    min-height: 100vh;
+}
+.bg-toyota {
+    background-color:darkblue;
+    
+}
+.logo-section {
+    background-size: cover;
+    background-position: center;
+}
+
+.custom-alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    display: none;
+    animation: slideIn 0.5s ease-in-out;
+    width: 25%; /* 1/4 of desktop width */
+    max-width: 400px; /* Maximum width for very large screens */
+    min-width: 250px; /* Minimum width for readability */
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .custom-alert {
+        width: 90%; /* Wider on mobile */
+        right: 5%;
+    }
+}
+
+.container-form {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .container-form {
+        max-width: 100%;
+        padding: 15px;
+    }
+}
+
+.department-badge {
+    font-weight: normal;
+    padding: 5px 10px;
+}
+
+.status-badge {
+    padding: 5px 15px;
+}

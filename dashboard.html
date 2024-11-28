@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Toyota UDS</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link href="./bootstrap.css" rel="stylesheet" />
+    <link href="./custom.css" rel="stylesheet" />
+    <style>
+      /* Custom styles for sidebar */
+      .sidebar {
+        min-height: 100vh;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .sidebar-link {
+        padding: 10px 15px;
+        display: block;
+        color: #333;
+        text-decoration: none;
+        transition: all 0.3s;
+      }
+
+      .sidebar-link:hover {
+        background-color: #f8f9fa;
+        color: darkblue;
+      }
+
+      .sidebar-link.active {
+        background-color: darkblue;
+        color: white;
+      }
+
+      /* Custom styles for navbar */
+      .navbar-toyota {
+        background-color: darkblue;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          min-height: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-toyota">
+      <div class="container-fluid">
+        <div class="navbar-brand">
+          <img
+            class="mr-3"
+            src="toyota-logo.png"
+            alt="Toyota Logo"
+            height="30"
+          />
+        </div>
+        <h4 class="text-white mt-2">UNIT DELIVERY</h4>
+
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                id="userDropdown"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                <span class="text-white" id="userEmail"></span>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <a class="dropdown-item" href="#" id="logoutButton">Logout</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 px-0 bg-light sidebar">
+          <div class="py-4">
+            <a href="#" class="sidebar-link active"> Dashboard </a>
+          </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 col-lg-10 content">
+          <h2>Dashboard</h2>
+          <!-- Statistics  -->
+          <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Total Delivery</h5>
+                  <h2 class="card-text" id="totalDelivery"></h2>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">Destination</h5>
+                  <h2 class="card-text" id="totalDestination"></h2>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Table  -->
+          <div class="card mt-4">
+            <div class="card-header bg-white">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h5 class="mb-0">Delivery List</h5>
+                </div>
+                <div class="col text-end">
+                  <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDeliveryModal">
+                    Add Delivery
+                </button>
+                  <input
+                    type="text"
+                    class="form-control form-control-sm d-inline-block w-auto"
+                    placeholder="Search..."
+                    id="searchInput"
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Part Name</th>
+                    <th>Destination</th>
+                    <th>Planning</th>
+                    <th>Actual</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody id="deliveryTableBody">
+                  <!-- Table content will be populated by JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+ <!-- Modal for Add Delivery -->
+<div class="modal fade" id="addDeliveryModal" tabindex="-1" aria-labelledby="addDeliveryModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addDeliveryModalLabel">Add New Delivery</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addDeliveryForm" class="needs-validation" novalidate>
+          <div class="mb-3">
+            <label for="deliveryDate" class="form-label">Date</label>
+            <input type="date" class="form-control" id="deliveryDate" required />
+            <div class="invalid-feedback">Please enter a valid date.</div>
+          </div>
+          <div class="mb-3">
+            <label for="partName" class="form-label">Part Name</label>
+            <input type="text" class="form-control" id="partName" required />
+            <div class="invalid-feedback">Please enter the part name.</div>
+          </div>
+          <div class="mb-3">
+            <label for="destination" class="form-label">Destination</label>
+            <!-- <input type="text" class="form-control" id="destination" required /> -->
+            <select name="destination" id="destination" class="form-control" required>
+              <option value="" disabled selected>Select Destination</option>
+              <option value="INDONESIA">DOMESTIC</option>
+              <option value="VIETNAM">VIETNAM</option>
+              <option value="PHILLIPHINES">PHILLIPHINES</option>
+              <option value="INDIA">INDIA</option>
+              <option value="PAKISTAN">PAKISTAN</option>
+              <option value="BRAZILIA">BRAZILIA</option>
+              <option value="KUOZUI">KUOZUI</option>
+              <option value="MALAYSIA">MALAYSIA</option>
+              <option value="THAILAND">THAILAND</option>
+            </select>
+            <div class="invalid-feedback">Please enter the destination.</div>
+          </div>
+          <div class="mb-3">
+            <label for="planning" class="form-label">Planning</label>
+            <input type="number" class="form-control" id="planning" required />
+            <div class="invalid-feedback">Please enter the planning value.</div>
+          </div>
+          <div class="mb-3">
+            <label for="actual" class="form-label">Actual</label>
+            <input type="number" class="form-control" id="actual" required />
+            <div class="invalid-feedback">Please enter the actual value.</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="saveDelivery">Save</button>
+      </div>
+    </div>
+  </div>
+</div>
+  
+  <!-- Alert Components -->
+  <div class="alert alert-success alert-dismissible fade custom-alert" role="alert" id="successAlert">
+      delivery added successfully!
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+<!--  -->
+<!-- Modal for Edit Employee -->
+<div class="modal fade" id="editEmployeeModal" tabindex="-1" aria-labelledby="editEmployeeModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editEmployeeModalLabel">Edit Employee</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="editEmployeeForm" class="needs-validation" novalidate>
+          <input type="hidden" id="editEmployeeId" />
+          <div class="mb-3">
+            <label for="editEmployeeName" class="form-label">Name</label>
+            <input type="text" class="form-control" id="editEmployeeName" required />
+            <div class="invalid-feedback">Please enter the employee's name.</div>
+          </div>
+          <div class="mb-3">
+            <label for="editEmployeeDepartment" class="form-label">Department</label>
+            <select class="form-select" id="editEmployeeDepartment" required>
+              <option value="">Choose department...</option>
+              <option value="Engineering">Engineering</option>
+              <option value="HR">HR</option>
+              <option value="Finance">Finance</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+            <div class="invalid-feedback">Please select a department.</div>
+          </div>
+          <div class="mb-3">
+            <label for="editEmployeePosition" class="form-label">Position</label>
+            <input type="text" class="form-control" id="editEmployeePosition" required />
+            <div class="invalid-feedback">Please enter the position.</div>
+          </div>
+          <div class="mb-3">
+            <label for="editEmployeeStatus" class="form-label">Status</label>
+            <select class="form-select" id="editEmployeeStatus" required>
+              <option value="">Choose status...</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+            <div class="invalid-feedback">Please select a status.</div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" form="editEmployeeForm">Update</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="./bootstrap.js"></script>
+    <script src="./dashboard.js"></script>
+  </body>
+</html>
